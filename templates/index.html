@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Validar CPF</title>
+    <link rel="stylesheet" type= "text/css" href="../static/style.css">
+</head>
+<body>
+    <img src="https://faculdadesenacpe.edu.br/v19/wp-content/themes/senac/img/logo-senac.png">
+    <h1>Formulário de entrada dos parceiros SENAC/PE</h1>
+    <br>
+    <form action="/validar_cpf" method="post">
+        <p>Nome:</p>
+        <input type="text" name="nome" required>
+        <br>
+        <p>CPF:</p>
+        <input type="text" name="cpf" required>
+        <br><br>
+        <input type="submit" value="Validar">
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>CPF</th>
+                <th>Nome</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for parceiro in parceiros %}
+        <tr>
+            <td>{{ parceiro[0] }}</td>
+            <td>{{ parceiro[1] }}</td>
+            <td><button onclick="atualizarNome('{{parceiro[0]}}')">Atualizar</button></td>
+            <td>
+                <form action="/excluir_parceiro" method="post">
+                    <input type="hidden" name="cpf" value="{{parceiro[0]}}">
+                    <input type="submit" value="Excluir">
+                </form>
+            </td>
+        </tr>
+        {%  endfor %}    
+    </tbody>
+    </table>
+
+    <form id="form atualizar" action="/atualizar_parceiro" method="post" style="display: none;">
+        <input type="hidden" id="cpf para atualizar" name="cpf">
+        <input type="hidden" name="nome" id="novo nome">
+    </form>
+</body>
+
+<script type="text/javascript">
+    function atualizarNome(cpf){
+        var novonome = prompt("por favor insira o novo nome para o CPF " + cpf + ":","");
+        if(novonome != null && novonome != ""){
+            document.getElementById("cpf para atualizar").value = cpf;
+            document.getElementById("novo nome").value = novonome;
+            document.getElementById("form atualizar").submit();
+        }
+    }
+</script>
+
+</html>
